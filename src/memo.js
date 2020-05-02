@@ -7,6 +7,10 @@ class Memo {
     return memoId
   }
 
+  save () {}
+
+  update () {}
+
   delete () {
     return 'deleted'
   }
