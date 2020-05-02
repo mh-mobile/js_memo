@@ -1,18 +1,8 @@
 class Memo {
-  constructor () {}
-
-  static findAll () {}
-
-  static find (memoId) {
-    return memoId
-  }
-
-  save () {}
-
-  update () {}
-
-  delete () {
-    return 'deleted'
+  constructor (title, createAt, updatedAt) {
+    this.title = title
+    this.createAt = createAt
+    this.updatedAt = updatedAt
   }
 }
 
