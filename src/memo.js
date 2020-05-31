@@ -14,8 +14,7 @@ class Main {
 
   run (args, opts) {
     try {
-      const execCommand = getExecCommand(args, opts)
-      execCommand()
+      getExecCommand(args, opts)()
     } catch (e) {
       console.log('error: invalid options')
     }
