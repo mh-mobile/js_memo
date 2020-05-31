@@ -3,6 +3,8 @@ const { program } = require('commander')
 class Main {
   constructor (argv) {
     program
+      .name('memo')
+      .usage('[options] [file ...]')
       .option('-l, --list', 'list memos')
       .option('-d --delete', 'delete memo')
       .option('-r --read', 'read memo')
