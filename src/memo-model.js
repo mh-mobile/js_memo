@@ -1,8 +1,9 @@
 class MemoModel {
-  constructor (title, createAt, updatedAt) {
-    this.title = title
+  constructor (name, value, createAt, updatedAt) {
+    this.name = name
     this.createAt = createAt
     this.updatedAt = updatedAt
+    this.value = value
   }
 }
 

@@ -1,4 +1,6 @@
 const { program } = require('commander')
+const inquirer = require('inquirer')
+const MemoModel = require('./memo-model.js')
 
 class Main {
   constructor (argv) {
@@ -65,15 +67,61 @@ class Main {
     }
 
     function execListMemosComand () {
-      console.log('list memo')
+      const memos = [
+        new MemoModel('memo1', '1', '', ''),
+        new MemoModel('memo2', '2', '', ''),
+        new MemoModel('memo3', '3', '', ''),
+        new MemoModel('memo4', '4', '', '')
+      ]
+
+      memos.forEach((memo) => {
+        console.log(memo.name)
+      })
     }
 
     function execReadMemoCommand () {
-      console.log('read memo')
+      const memos = [
+        new MemoModel('memo1', '1', '', ''),
+        new MemoModel('memo2', '2', '', ''),
+        new MemoModel('memo3', '3', '', ''),
+        new MemoModel('memo4', '4', '', '')
+      ]
+
+      inquirer
+        .prompt([
+          {
+            type: 'list',
+            name: 'memo',
+            message: 'Choose a note you want to see:',
+            choices: memos
+          }
+        ])
+        .then((answers) => {
+          const selectedMemo = memos.find((memo) => memo.value === answers.memo)
+          console.info('memo:', selectedMemo.name)
+        })
     }
 
     function execEditMemoCommand () {
-      console.log('edit memo')
+      const memos = [
+        new MemoModel('memo1', '1', '', ''),
+        new MemoModel('memo2', '2', '', ''),
+        new MemoModel('memo3', '3', '', ''),
+        new MemoModel('memo4', '4', '', '')
+      ]
+
+      inquirer
+        .prompt([
+          {
+            type: 'list',
+            name: 'memo',
+            message: 'What memo do you edit.',
+            choices: memos
+          }
+        ])
+        .then((answers) => {
+          console.info('memo:', answers.memo)
+        })
     }
 
     function execCreateMemoCommand () {
@@ -81,7 +129,25 @@ class Main {
     }
 
     function execDeleteMemoCommand () {
-      console.log('delete memo')
+      const memos = [
+        new MemoModel('memo1', '1', '', ''),
+        new MemoModel('memo2', '2', '', ''),
+        new MemoModel('memo3', '3', '', ''),
+        new MemoModel('memo4', '4', '', '')
+      ]
+
+      inquirer
+        .prompt([
+          {
+            type: 'list',
+            name: 'memo',
+            message: 'Choose a note you want to delete:',
+            choices: memos
+          }
+        ])
+        .then((answers) => {
+          console.info('memo:', answers.memo)
+        })
     }
 
     function getValidOpts (opts) {
