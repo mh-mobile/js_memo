@@ -1,83 +1,96 @@
 const { program } = require('commander')
-program
-  .option('-l, --list', 'list memos')
-  .option('-d --delete', 'delete memo')
-  .option('-r --read', 'read memo')
-  .option('-e --edit', 'edit memo')
-program.parse(process.argv)
 
-try {
-  const execCommand = getExecCommand(program.args, program.opts())
-  execCommand()
-} catch (e) {
-  console.log('error: invalid options')
-}
-
-function getExecCommand (args, cliOpts) {
-  // 有効なオプションのオブジェクトを生成
-  const validKeys = Object.keys(cliOpts).filter((key) => cliOpts[key])
-  const opts = validKeys.reduce((result, key) => {
-    result[key] = cliOpts[key]
-    return result
-  }, {})
-
-  // オプションが２つの場合、不正なコマンド
-  if (Object.keys(opts).length === 2) {
-    throw new Error('Error: invalid options')
+class Main {
+  constructor (argv) {
+    program
+      .option('-l, --list', 'list memos')
+      .option('-d --delete', 'delete memo')
+      .option('-r --read', 'read memo')
+      .option('-e --edit', 'edit memo')
+    program.parse(argv)
   }
 
-  // オプションなしの場合の処理
-  // 標準入力からメモを作成
-  if (Object.keys(opts).length === 0) {
-    return execCreateMemoCommand
-  }
+  run (args, opts) {
+    try {
+      const execCommand = getExecCommand(args, opts)
+      execCommand()
+    } catch (e) {
+      console.log('error: invalid options')
+    }
 
-  // オプションありの場合の処理
-  // 通常の引数が指定された場合は不正な引数
-  if (args.length > 0) {
-    throw new Error('Error: invalid args')
-  }
+    function getExecCommand (args, opts) {
+      // 有効なオプションのオブジェクトを生成
+      const validOpts = getValidOpts(opts)
 
-  // 削除オプション
-  if (opts.delete) {
-    return execDeleteMemoCommand
-  }
+      // オプションが２つの場合、不正なコマンド
+      if (Object.keys(validOpts).length === 2) {
+        throw new Error('Error: invalid options')
+      }
 
-  // 参照オプション
-  if (opts.read) {
-    return execReadMemoCommand
-  }
+      // オプションなしの場合の処理
+      // 標準入力からメモを作成
+      if (Object.keys(validOpts).length === 0) {
+        return execCreateMemoCommand
+      }
 
-  // 編集オプション
-  if (opts.edit) {
-    return execEditMemoCommand
-  }
+      // オプションありの場合の処理
+      // 通常の引数が指定された場合は不正な引数
+      if (args.length > 0) {
+        throw new Error('Error: invalid args')
+      }
 
-  // 一覧オプション
-  if (opts.list) {
-    return execListMemosComand
-  }
+      // 削除オプション
+      if (opts.delete) {
+        return execDeleteMemoCommand
+      }
 
-  // 上記以外は不正なオプション
-  throw new Error('Error: invalid options')
+      // 参照オプション
+      if (opts.read) {
+        return execReadMemoCommand
+      }
+
+      // 編集オプション
+      if (opts.edit) {
+        return execEditMemoCommand
+      }
+
+      // 一覧オプション
+      if (opts.list) {
+        return execListMemosComand
+      }
+
+      // 上記以外は不正なオプション
+      throw new Error('Error: invalid options')
+    }
+
+    function execListMemosComand () {
+      console.log('list memo')
+    }
+
+    function execReadMemoCommand () {
+      console.log('read memo')
+    }
+
+    function execEditMemoCommand () {
+      console.log('edit memo')
+    }
+
+    function execCreateMemoCommand () {
+      console.log('create memo')
+    }
+
+    function execDeleteMemoCommand () {
+      console.log('delete memo')
+    }
+
+    function getValidOpts (opts) {
+      const validKeys = Object.keys(opts).filter((key) => opts[key])
+      return validKeys.reduce((result, key) => {
+        result[key] = opts[key]
+        return result
+      }, {})
+    }
+  }
 }
 
-function execListMemosComand () {
-  console.log('list memo')
-}
-
-function execReadMemoCommand () {
-  console.log('read memo')
-}
-
-function execEditMemoCommand () {
-  console.log('edit memo')
-}
-
-function execCreateMemoCommand () {
-  console.log('create memo')
-}
-
-function execDeleteMemoCommand () {
-  console.log('delete memo')
-}
+new Main(process.argv).run(program.args, program.opts())
