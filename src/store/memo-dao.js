@@ -3,11 +3,8 @@ class MemoDao {
     this.memoStore = memoStore
   }
 
-  async list () {
-    const memos = await this.memoStore.list()
-    memos.forEach((memo) => {
-      console.log(memo.name)
-    })
+  list () {
+    return this.memoStore.list()
   }
 
   read () {
