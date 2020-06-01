@@ -1,4 +1,5 @@
 const { program } = require('commander')
+const OptionUtil = require('./util/option-util.js')
 const MemoListCommand = require('./command/memo-list-command.js')
 const MemoCreateCommand = require('./command/memo-create-command.js')
 const MemoReadCommand = require('./command/memo-read-command.js')
@@ -27,7 +28,7 @@ class Main {
 
   getExecCommand (args, opts) {
     // 有効なオプションのオブジェクトを生成
-    const validOpts = this.getValidOpts(opts)
+    const validOpts = OptionUtil.getValidOpts(opts)
 
     // オプションが２つの場合、不正なコマンド
     if (Object.keys(validOpts).length === 2) {
@@ -73,14 +74,6 @@ class Main {
 
     // 上記以外は不正なオプション
     throw new Error('Error: invalid options')
-  }
-
-  getValidOpts (opts) {
-    const validKeys = Object.keys(opts).filter((key) => opts[key])
-    return validKeys.reduce((result, key) => {
-      result[key] = opts[key]
-      return result
-    }, {})
   }
 }
 
