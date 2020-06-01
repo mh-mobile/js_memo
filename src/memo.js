@@ -20,60 +20,60 @@ class MemoCLI {
 
   run (args, opts) {
     try {
-      this.getExecCommand(args, opts)()
+      getExecCommand(args, opts)()
     } catch (e) {
       console.log(`error: ${e}`)
     }
-  }
 
-  getExecCommand (args, opts) {
-    // 有効なオプションのオブジェクトを生成
-    const validOpts = OptionUtil.getValidOpts(opts)
+    function getExecCommand (args, opts) {
+      // 有効なオプションのオブジェクトを生成
+      const validOpts = OptionUtil.getValidOpts(opts)
 
-    // オプションが２つの場合、不正なコマンド
-    if (Object.keys(validOpts).length === 2) {
+      // オプションが２つの場合、不正なコマンド
+      if (Object.keys(validOpts).length === 2) {
+        throw new Error('Error: invalid options')
+      }
+
+      // オプションなしの場合の処理
+      // 標準入力からメモを作成
+      if (Object.keys(validOpts).length === 0) {
+        const createCommand = new MemoCreateCommand()
+        return createCommand.execute.bind(createCommand)
+      }
+
+      // オプションありの場合の処理
+      // 通常の引数が指定された場合は不正な引数
+      if (args.length > 0) {
+        throw new Error('Error: invalid args')
+      }
+
+      // 削除オプション
+      if (opts.delete) {
+        const deleteCommand = new MemoDeleteCommand()
+        return deleteCommand.execute.bind(this)
+      }
+
+      // 参照オプション
+      if (opts.read) {
+        const readCommand = new MemoReadCommand()
+        return readCommand.execute.bind(readCommand)
+      }
+
+      // 編集オプション
+      if (opts.edit) {
+        const editCommand = new MemoEditCommand()
+        return editCommand.execute.bind(editCommand)
+      }
+
+      // 一覧オプション
+      if (opts.list) {
+        const listCommand = new MemoListCommand()
+        return listCommand.execute.bind(listCommand)
+      }
+
+      // 上記以外は不正なオプション
       throw new Error('Error: invalid options')
     }
-
-    // オプションなしの場合の処理
-    // 標準入力からメモを作成
-    if (Object.keys(validOpts).length === 0) {
-      const createCommand = new MemoCreateCommand()
-      return createCommand.execute.bind(createCommand)
-    }
-
-    // オプションありの場合の処理
-    // 通常の引数が指定された場合は不正な引数
-    if (args.length > 0) {
-      throw new Error('Error: invalid args')
-    }
-
-    // 削除オプション
-    if (opts.delete) {
-      const deleteCommand = new MemoDeleteCommand()
-      return deleteCommand.execute.bind(this)
-    }
-
-    // 参照オプション
-    if (opts.read) {
-      const readCommand = new MemoReadCommand()
-      return readCommand.execute.bind(readCommand)
-    }
-
-    // 編集オプション
-    if (opts.edit) {
-      const editCommand = new MemoEditCommand()
-      return editCommand.execute.bind(editCommand)
-    }
-
-    // 一覧オプション
-    if (opts.list) {
-      const listCommand = new MemoListCommand()
-      return listCommand.execute.bind(listCommand)
-    }
-
-    // 上記以外は不正なオプション
-    throw new Error('Error: invalid options')
   }
 }
 
