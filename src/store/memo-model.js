@@ -1,9 +1,15 @@
 class MemoModel {
-  constructor (name, value, createAt, updatedAt) {
-    this.name = name
-    this.createAt = createAt
-    this.updatedAt = updatedAt
-    this.value = value
+  constructor (content, id) {
+    this.content = content
+    this.id = id
+  }
+
+  get name () {
+    return this.content.split('\n')[0]
+  }
+
+  get value () {
+    return this.id
   }
 }
 

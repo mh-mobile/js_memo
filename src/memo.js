@@ -28,7 +28,7 @@ class MemoCLI {
     }
 
     function getExecCommand (args, opts) {
-      const memoDao = new MemoDao(new MemoFileStore('memo.json'))
+      const memoDao = new MemoDao(new MemoFileStore('data/memo.json'))
 
       // 有効なオプションのオブジェクトを生成
       const validOpts = OptionUtil.getValidOpts(opts)
