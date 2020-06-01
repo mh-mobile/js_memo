@@ -24,7 +24,7 @@ class MemoCLI {
     try {
       getExecCommand(args, opts)()
     } catch (e) {
-      console.log(`error: ${e}`)
+      console.log(`${e}`)
     }
 
     function getExecCommand (args, opts) {
@@ -35,7 +35,7 @@ class MemoCLI {
 
       // オプションが２つの場合、不正なコマンド
       if (Object.keys(validOpts).length === 2) {
-        throw new Error('Error: invalid options')
+        throw new Error('invalid options')
       }
 
       // オプションなしの場合の処理
@@ -48,7 +48,7 @@ class MemoCLI {
       // オプションありの場合の処理
       // 通常の引数が指定された場合は不正な引数
       if (args.length > 0) {
-        throw new Error('Error: invalid args')
+        throw new Error('invalid args')
       }
 
       // 削除オプション
@@ -76,7 +76,7 @@ class MemoCLI {
       }
 
       // 上記以外は不正なオプション
-      throw new Error('Error: invalid options')
+      throw new Error('invalid options')
     }
   }
 }
