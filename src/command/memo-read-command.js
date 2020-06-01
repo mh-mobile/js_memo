@@ -21,6 +21,7 @@ class MemoReadCommand extends MemoCommand {
       .then((answers) => {
         const selectedMemo = memos.find((memo) => memo.value === answers.memo)
         console.info('memo:', selectedMemo.name)
+        this.dao.read()
       })
   }
 }

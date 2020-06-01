@@ -5,6 +5,8 @@ const MemoCreateCommand = require('./command/memo-create-command.js')
 const MemoReadCommand = require('./command/memo-read-command.js')
 const MemoEditCommand = require('./command/memo-edit-command.js')
 const MemoDeleteCommand = require('./command/memo-delete-command.js')
+const MemoFileStore = require('./store/memo-file-store.js')
+const MemoDao = require('./store/memo-dao.js')
 
 class MemoCLI {
   constructor (argv) {
@@ -26,6 +28,8 @@ class MemoCLI {
     }
 
     function getExecCommand (args, opts) {
+      const memoDao = new MemoDao(new MemoFileStore('memo.json'))
+
       // 有効なオプションのオブジェクトを生成
       const validOpts = OptionUtil.getValidOpts(opts)
 
@@ -37,7 +41,7 @@ class MemoCLI {
       // オプションなしの場合の処理
       // 標準入力からメモを作成
       if (Object.keys(validOpts).length === 0) {
-        const createCommand = new MemoCreateCommand()
+        const createCommand = new MemoCreateCommand(memoDao)
         return createCommand.execute.bind(createCommand)
       }
 
@@ -49,25 +53,25 @@ class MemoCLI {
 
       // 削除オプション
       if (opts.delete) {
-        const deleteCommand = new MemoDeleteCommand()
-        return deleteCommand.execute.bind(this)
+        const deleteCommand = new MemoDeleteCommand(memoDao)
+        return deleteCommand.execute.bind(deleteCommand)
       }
 
       // 参照オプション
       if (opts.read) {
-        const readCommand = new MemoReadCommand()
+        const readCommand = new MemoReadCommand(memoDao)
         return readCommand.execute.bind(readCommand)
       }
 
       // 編集オプション
       if (opts.edit) {
-        const editCommand = new MemoEditCommand()
+        const editCommand = new MemoEditCommand(memoDao)
         return editCommand.execute.bind(editCommand)
       }
 
       // 一覧オプション
       if (opts.list) {
-        const listCommand = new MemoListCommand()
+        const listCommand = new MemoListCommand(memoDao)
         return listCommand.execute.bind(listCommand)
       }
 

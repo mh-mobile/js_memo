@@ -20,6 +20,7 @@ class MemoDeleteCommand extends MemoCommand {
       ])
       .then((answers) => {
         console.info('memo:', answers.memo)
+        this.dao.delete()
       })
   }
 }

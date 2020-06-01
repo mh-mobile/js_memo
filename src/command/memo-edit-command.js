@@ -20,6 +20,7 @@ class MemoEditCommand extends MemoCommand {
       ])
       .then((answers) => {
         console.info('memo:', answers.memo)
+        this.dao.edit()
       })
   }
 }

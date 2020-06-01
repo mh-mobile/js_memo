@@ -3,11 +3,25 @@ class MemoDao {
     this.memoStore = memoStore
   }
 
-  list () {}
-  read () {}
-  edit () {}
-  delete () {}
-  create () {}
+  list () {
+    this.memoStore.list()
+  }
+
+  read () {
+    this.memoStore.read()
+  }
+
+  edit () {
+    this.memoStore.edit()
+  }
+
+  delete () {
+    this.memoStore.delete()
+  }
+
+  create () {
+    this.memoStore.create()
+  }
 }
 
 module.exports = MemoDao
