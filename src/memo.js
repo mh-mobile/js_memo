@@ -6,7 +6,7 @@ const MemoReadCommand = require('./command/memo-read-command.js')
 const MemoEditCommand = require('./command/memo-edit-command.js')
 const MemoDeleteCommand = require('./command/memo-delete-command.js')
 
-class Main {
+class MemoCLI {
   constructor (argv) {
     program
       .name('memo')
@@ -77,4 +77,4 @@ class Main {
   }
 }
 
-new Main(process.argv).run(program.args, program.opts())
+new MemoCLI(process.argv).run(program.args, program.opts())
