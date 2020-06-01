@@ -1,6 +1,9 @@
 const { program } = require('commander')
-const inquirer = require('inquirer')
-const MemoModel = require('./memo-model.js')
+const MemoListCommand = require('./command/memo-list-command.js')
+const MemoCreateCommand = require('./command/memo-create-command.js')
+const MemoReadCommand = require('./command/memo-read-command.js')
+const MemoEditCommand = require('./command/memo-edit-command.js')
+const MemoDeleteCommand = require('./command/memo-delete-command.js')
 
 class Main {
   constructor (argv) {
@@ -16,147 +19,68 @@ class Main {
 
   run (args, opts) {
     try {
-      getExecCommand(args, opts)()
+      this.getExecCommand(args, opts)()
     } catch (e) {
-      console.log('error: invalid options')
+      console.log(`error: ${e}`)
     }
+  }
 
-    function getExecCommand (args, opts) {
-      // 有効なオプションのオブジェクトを生成
-      const validOpts = getValidOpts(opts)
+  getExecCommand (args, opts) {
+    // 有効なオプションのオブジェクトを生成
+    const validOpts = this.getValidOpts(opts)
 
-      // オプションが２つの場合、不正なコマンド
-      if (Object.keys(validOpts).length === 2) {
-        throw new Error('Error: invalid options')
-      }
-
-      // オプションなしの場合の処理
-      // 標準入力からメモを作成
-      if (Object.keys(validOpts).length === 0) {
-        return execCreateMemoCommand
-      }
-
-      // オプションありの場合の処理
-      // 通常の引数が指定された場合は不正な引数
-      if (args.length > 0) {
-        throw new Error('Error: invalid args')
-      }
-
-      // 削除オプション
-      if (opts.delete) {
-        return execDeleteMemoCommand
-      }
-
-      // 参照オプション
-      if (opts.read) {
-        return execReadMemoCommand
-      }
-
-      // 編集オプション
-      if (opts.edit) {
-        return execEditMemoCommand
-      }
-
-      // 一覧オプション
-      if (opts.list) {
-        return execListMemosComand
-      }
-
-      // 上記以外は不正なオプション
+    // オプションが２つの場合、不正なコマンド
+    if (Object.keys(validOpts).length === 2) {
       throw new Error('Error: invalid options')
     }
 
-    function execListMemosComand () {
-      const memos = [
-        new MemoModel('memo1', '1', '', ''),
-        new MemoModel('memo2', '2', '', ''),
-        new MemoModel('memo3', '3', '', ''),
-        new MemoModel('memo4', '4', '', '')
-      ]
-
-      memos.forEach((memo) => {
-        console.log(memo.name)
-      })
+    // オプションなしの場合の処理
+    // 標準入力からメモを作成
+    if (Object.keys(validOpts).length === 0) {
+      const createCommand = new MemoCreateCommand()
+      return createCommand.execute.bind(createCommand)
     }
 
-    function execReadMemoCommand () {
-      const memos = [
-        new MemoModel('memo1', '1', '', ''),
-        new MemoModel('memo2', '2', '', ''),
-        new MemoModel('memo3', '3', '', ''),
-        new MemoModel('memo4', '4', '', '')
-      ]
-
-      inquirer
-        .prompt([
-          {
-            type: 'list',
-            name: 'memo',
-            message: 'Choose a note you want to see:',
-            choices: memos
-          }
-        ])
-        .then((answers) => {
-          const selectedMemo = memos.find((memo) => memo.value === answers.memo)
-          console.info('memo:', selectedMemo.name)
-        })
+    // オプションありの場合の処理
+    // 通常の引数が指定された場合は不正な引数
+    if (args.length > 0) {
+      throw new Error('Error: invalid args')
     }
 
-    function execEditMemoCommand () {
-      const memos = [
-        new MemoModel('memo1', '1', '', ''),
-        new MemoModel('memo2', '2', '', ''),
-        new MemoModel('memo3', '3', '', ''),
-        new MemoModel('memo4', '4', '', '')
-      ]
-
-      inquirer
-        .prompt([
-          {
-            type: 'list',
-            name: 'memo',
-            message: 'What memo do you edit.',
-            choices: memos
-          }
-        ])
-        .then((answers) => {
-          console.info('memo:', answers.memo)
-        })
+    // 削除オプション
+    if (opts.delete) {
+      const deleteCommand = new MemoDeleteCommand()
+      return deleteCommand.execute.bind(this)
     }
 
-    function execCreateMemoCommand () {
-      console.log('create memo')
+    // 参照オプション
+    if (opts.read) {
+      const readCommand = new MemoReadCommand()
+      return readCommand.execute.bind(readCommand)
     }
 
-    function execDeleteMemoCommand () {
-      const memos = [
-        new MemoModel('memo1', '1', '', ''),
-        new MemoModel('memo2', '2', '', ''),
-        new MemoModel('memo3', '3', '', ''),
-        new MemoModel('memo4', '4', '', '')
-      ]
-
-      inquirer
-        .prompt([
-          {
-            type: 'list',
-            name: 'memo',
-            message: 'Choose a note you want to delete:',
-            choices: memos
-          }
-        ])
-        .then((answers) => {
-          console.info('memo:', answers.memo)
-        })
+    // 編集オプション
+    if (opts.edit) {
+      const editCommand = new MemoEditCommand()
+      return editCommand.execute.bind(editCommand)
     }
 
-    function getValidOpts (opts) {
-      const validKeys = Object.keys(opts).filter((key) => opts[key])
-      return validKeys.reduce((result, key) => {
-        result[key] = opts[key]
-        return result
-      }, {})
+    // 一覧オプション
+    if (opts.list) {
+      const listCommand = new MemoListCommand()
+      return listCommand.execute.bind(listCommand)
     }
+
+    // 上記以外は不正なオプション
+    throw new Error('Error: invalid options')
+  }
+
+  getValidOpts (opts) {
+    const validKeys = Object.keys(opts).filter((key) => opts[key])
+    return validKeys.reduce((result, key) => {
+      result[key] = opts[key]
+      return result
+    }, {})
   }
 }
 
