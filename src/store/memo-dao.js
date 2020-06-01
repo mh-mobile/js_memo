@@ -1,8 +1,13 @@
-const MemoFileStore = require('./memo-file-store')
 class MemoDao {
   constructor (memoStore) {
     this.memoStore = memoStore
   }
+
+  list () {}
+  read () {}
+  edit () {}
+  delete () {}
+  create () {}
 }
 
-module.exports = MemoFileStore
+module.exports = MemoDao
