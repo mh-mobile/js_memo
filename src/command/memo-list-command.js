@@ -1,5 +1,4 @@
-const MemoCommand = require('./memo-command.js')
-const MemoModel = require('../memo-model.js')
+const { MemoCommand, MemoModel } = require('./memo-command.js')
 class MemoListCommand extends MemoCommand {
   constructor () {
     super()

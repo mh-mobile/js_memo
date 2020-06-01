@@ -1,6 +1,4 @@
-const MemoCommand = require('./memo-command.js')
-const MemoModel = require('../memo-model.js')
-const inquirer = require('inquirer')
+const { MemoCommand, MemoModel, inquirer } = require('./memo-command.js')
 
 class MemoDeleteCommand extends MemoCommand {
   execute () {

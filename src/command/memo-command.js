@@ -1,7 +1,13 @@
+const MemoModel = require('../memo-model.js')
+const inquirer = require('inquirer')
 class MemoCommand {
   execute () {
     throw new Error('execute method must be overridden')
   }
 }
 
-module.exports = MemoCommand
+module.exports = {
+  MemoCommand,
+  MemoModel,
+  inquirer
+}
