@@ -15,8 +15,8 @@ class MemoDao {
     this.memoStore.edit()
   }
 
-  delete () {
-    this.memoStore.delete()
+  delete (id) {
+    return this.memoStore.delete(id)
   }
 
   create () {

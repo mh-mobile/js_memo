@@ -57,8 +57,18 @@ class MemoFileStore extends MemoStore {
     console.log('edit store')
   }
 
-  delete () {
-    console.log('delete store')
+  delete (id) {
+    return this.list()
+      .then((memos) => {
+        return memos.filter((memo) => memo.id !== id)
+      })
+      .then((savedMemos) => {
+        fs.writeFile(this.filePath, JSON.stringify(savedMemos), (error) => {
+          if (error) {
+            throw error
+          }
+        })
+      })
   }
 
   create () {

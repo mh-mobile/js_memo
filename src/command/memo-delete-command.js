@@ -1,13 +1,8 @@
-const { MemoCommand, MemoModel, inquirer } = require('./memo-command.js')
+const { MemoCommand, inquirer } = require('./memo-command.js')
 
 class MemoDeleteCommand extends MemoCommand {
-  execute () {
-    const memos = [
-      new MemoModel('memo1', '1', '', ''),
-      new MemoModel('memo2', '2', '', ''),
-      new MemoModel('memo3', '3', '', ''),
-      new MemoModel('memo4', '4', '', '')
-    ]
+  async execute () {
+    const memos = await this.dao.list()
 
     inquirer
       .prompt([
@@ -18,9 +13,9 @@ class MemoDeleteCommand extends MemoCommand {
           choices: memos
         }
       ])
-      .then((answers) => {
-        console.info('memo:', answers.memo)
-        this.dao.delete()
+      .then(async (answers) => {
+        const selectedMemo = memos.find((memo) => memo.value === answers.memo)
+        await this.dao.delete(selectedMemo.id)
       })
   }
 }

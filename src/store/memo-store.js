@@ -11,7 +11,7 @@ class MemoStore {
     throw new Error('edit method must be overridden')
   }
 
-  delete () {
+  delete (id) {
     throw new Error('delete method must be overridden')
   }
 
