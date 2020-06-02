@@ -1,7 +1,9 @@
 const { MemoCommand, MemoModel, inquirer } = require('./memo-command.js')
 
 class MemoEditCommand extends MemoCommand {
-  execute () {
+  async execute () {
+    const memos = await this.dao.list()
+
     inquirer
       .prompt([
         {
@@ -12,8 +14,9 @@ class MemoEditCommand extends MemoCommand {
         }
       ])
       .then((answers) => {
-        console.info('memo:', answers.memo)
-        this.dao.edit()
+        const selectedMemo = memos.find((memo) => memo.value === answers.memo)
+        selectedMemo.content = '書き換えたよん！'
+        this.dao.update(selectedMemo)
       })
   }
 }

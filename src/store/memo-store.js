@@ -7,7 +7,7 @@ class MemoStore {
     throw new Error('read method must be overridden')
   }
 
-  edit () {
+  update (editedMemo) {
     throw new Error('edit method must be overridden')
   }
 

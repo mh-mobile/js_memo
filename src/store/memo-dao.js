@@ -11,8 +11,8 @@ class MemoDao {
     return this.memoStore.read(id)
   }
 
-  edit () {
-    this.memoStore.edit()
+  update (editedMemo) {
+    this.memoStore.update(editedMemo)
   }
 
   delete (id) {

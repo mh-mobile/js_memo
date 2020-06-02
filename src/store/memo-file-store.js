@@ -36,8 +36,20 @@ class MemoFileStore extends MemoStore {
     })
   }
 
-  edit () {
-    console.log('edit store')
+  update (editedMemo) {
+    return this.list()
+      .then((memos) => {
+        const foundIndex = memos.findIndex((memo) => memo.id === editedMemo.id)
+        memos.splice(foundIndex, 1, editedMemo)
+        return memos
+      })
+      .then((savedMemos) => {
+        fs.writeFile(this.filePath, JSON.stringify(savedMemos), (error) => {
+          if (error) {
+            throw error
+          }
+        })
+      })
   }
 
   delete (id) {
