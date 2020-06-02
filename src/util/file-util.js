@@ -48,6 +48,10 @@ class FileUtil {
   }
 
   static convertStdinToMemos () {
+    // 標準入力がない場合の対策
+    if (FileUtil.getStdinSize() === 0) return Promise.resolve([])
+
+    // 標準入力からファイルコンテンツを読み込む
     return FileUtil.readFileContent(process.stdin.fd).then((data) => [
       new MemoModel(uuid.v4(), data)
     ])
@@ -55,6 +59,10 @@ class FileUtil {
 
   static filePathExists (filePaths) {
     return filePaths && filePaths.length > 0
+  }
+
+  static getStdinSize () {
+    return fs.fstatSync(process.stdin.fd).size
   }
 }
 
