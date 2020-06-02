@@ -41,7 +41,7 @@ class MemoCLI {
       // オプションなしの場合の処理
       // 標準入力からメモを作成
       if (Object.keys(validOpts).length === 0) {
-        const createCommand = new MemoCreateCommand(memoDao)
+        const createCommand = new MemoCreateCommand(memoDao, args)
         return createCommand.execute.bind(createCommand)
       }
 
