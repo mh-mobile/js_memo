@@ -16,18 +16,20 @@ class MemoCreateCommand extends MemoCommand {
 
   async createMemos () {
     if (this.filePathExists()) {
-      return this.convertMemos(this.filePaths)
+      return this.convertFilePathsToMemos()
     } else {
-      return Promise.resolve([])
+      return this.convertStdinToMemos()
     }
   }
 
-  convertMemos (filePaths) {
-    const memoPromises = filePaths.map((filePath) => this.convertMemo(filePath))
+  convertFilePathsToMemos () {
+    const memoPromises = this.filePaths.map((filePath) =>
+      this.convertFilePathToMemo(filePath)
+    )
     return Promise.all(memoPromises)
   }
 
-  convertMemo (filePath) {
+  convertFilePathToMemo (filePath) {
     return new Promise((resolve, reject) => {
       fs.readFile(filePath, 'utf-8', (error, data) => {
         if (error) {
@@ -37,6 +39,20 @@ class MemoCreateCommand extends MemoCommand {
 
         const memo = new MemoModel(uuid.v4(), data)
         resolve(memo)
+      })
+    })
+  }
+
+  convertStdinToMemos () {
+    return new Promise((resolve, reject) => {
+      fs.readFile(process.stdin.fd, 'utf-8', (error, data) => {
+        if (error) {
+          reject(error)
+          return
+        }
+
+        const memo = new MemoModel(uuid.v4(), data)
+        resolve([memo])
       })
     })
   }
