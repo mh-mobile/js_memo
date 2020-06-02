@@ -1,7 +1,7 @@
 class MemoModel {
-  constructor (content, id) {
-    this.content = content
+  constructor (id, content) {
     this.id = id
+    this.content = content
   }
 
   get name () {

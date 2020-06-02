@@ -1,8 +1,10 @@
-const { MemoCommand } = require('./memo-command.js')
+const { MemoCommand, MemoModel } = require('./memo-command.js')
+const uuid = require('node-uuid')
 
 class MemoCreateCommand extends MemoCommand {
-  execute () {
-    this.dao.create()
+  async execute () {
+    const memos = [new MemoModel(uuid.v4(), 'addmemo')]
+    await this.dao.create(memos)
   }
 }
 

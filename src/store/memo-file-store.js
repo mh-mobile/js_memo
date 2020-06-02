@@ -22,7 +22,7 @@ class MemoFileStore extends MemoStore {
 
         const jsonArray = JSON.parse(data)
         const memos = jsonArray.map((memoJson) => {
-          return new MemoModel(memoJson.content, memoJson.id)
+          return new MemoModel(memoJson.id, memoJson.content)
         })
 
         resolve(memos)
@@ -54,8 +54,18 @@ class MemoFileStore extends MemoStore {
       })
   }
 
-  create () {
-    console.log('create store')
+  create (newMemos) {
+    return this.list()
+      .then((memos) => {
+        return [...memos, ...newMemos]
+      })
+      .then((savedMemos) => {
+        fs.writeFile(this.filePath, JSON.stringify(savedMemos), (error) => {
+          if (error) {
+            throw error
+          }
+        })
+      })
   }
 }
 

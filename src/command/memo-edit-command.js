@@ -2,13 +2,6 @@ const { MemoCommand, MemoModel, inquirer } = require('./memo-command.js')
 
 class MemoEditCommand extends MemoCommand {
   execute () {
-    const memos = [
-      new MemoModel('memo1', '1', '', ''),
-      new MemoModel('memo2', '2', '', ''),
-      new MemoModel('memo3', '3', '', ''),
-      new MemoModel('memo4', '4', '', '')
-    ]
-
     inquirer
       .prompt([
         {

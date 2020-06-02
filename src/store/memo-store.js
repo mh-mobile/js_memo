@@ -15,7 +15,7 @@ class MemoStore {
     throw new Error('delete method must be overridden')
   }
 
-  create () {
+  create (newMemos) {
     throw new Error('create method must be overridden')
   }
 }
