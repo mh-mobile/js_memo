@@ -1,6 +1,5 @@
-const { MemoCommand, MemoModel } = require('./memo-command.js')
-const uuid = require('node-uuid')
-const fs = require('fs')
+const { MemoCommand } = require('./memo-command.js')
+const FileUtil = require('../util/file-util.js')
 
 class MemoCreateCommand extends MemoCommand {
   constructor (dao, filePaths) {
@@ -15,52 +14,13 @@ class MemoCreateCommand extends MemoCommand {
   }
 
   async createMemos () {
-    if (this.filePathExists()) {
+    if (FileUtil.filePathExists(this.filePaths)) {
       // 引数のファイルからメモを追加
-      return this.convertFilePathsToMemos()
+      return FileUtil.convertFilePathsToMemos(this.filePaths)
     } else {
       // 標準入力からメモを追加
-      return this.convertStdinToMemos()
+      return FileUtil.convertStdinToMemos()
     }
-  }
-
-  convertFilePathsToMemos () {
-    const memoPromises = this.filePaths.map((filePath) =>
-      this.convertFilePathToMemo(filePath)
-    )
-    return Promise.all(memoPromises)
-  }
-
-  convertFilePathToMemo (filePath) {
-    return new Promise((resolve, reject) => {
-      fs.readFile(filePath, 'utf-8', (error, data) => {
-        if (error) {
-          reject(error)
-          return
-        }
-
-        const memo = new MemoModel(uuid.v4(), data)
-        resolve(memo)
-      })
-    })
-  }
-
-  convertStdinToMemos () {
-    return new Promise((resolve, reject) => {
-      fs.readFile(process.stdin.fd, 'utf-8', (error, data) => {
-        if (error) {
-          reject(error)
-          return
-        }
-
-        const memo = new MemoModel(uuid.v4(), data)
-        resolve([memo])
-      })
-    })
-  }
-
-  filePathExists () {
-    return this.filePaths && this.filePaths.length > 0
   }
 }
 

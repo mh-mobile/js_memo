@@ -1,5 +1,6 @@
 const MemoStore = require('./memo-store')
 const MemoModel = require('./memo-model')
+const FileUtil = require('../util/file-util.js')
 const fs = require('fs')
 class MemoFileStore extends MemoStore {
   constructor (filePath) {
@@ -44,11 +45,10 @@ class MemoFileStore extends MemoStore {
         return memos
       })
       .then((savedMemos) => {
-        fs.writeFile(this.filePath, JSON.stringify(savedMemos), (error) => {
-          if (error) {
-            throw error
-          }
-        })
+        return FileUtil.writeFileContent(
+          this.filePath,
+          JSON.stringify(savedMemos)
+        )
       })
   }
 
@@ -58,11 +58,10 @@ class MemoFileStore extends MemoStore {
         return memos.filter((memo) => memo.id !== id)
       })
       .then((savedMemos) => {
-        fs.writeFile(this.filePath, JSON.stringify(savedMemos), (error) => {
-          if (error) {
-            throw error
-          }
-        })
+        return FileUtil.writeFileContent(
+          this.filePath,
+          JSON.stringify(savedMemos)
+        )
       })
   }
 
@@ -72,11 +71,10 @@ class MemoFileStore extends MemoStore {
         return [...memos, ...newMemos]
       })
       .then((savedMemos) => {
-        fs.writeFile(this.filePath, JSON.stringify(savedMemos), (error) => {
-          if (error) {
-            throw error
-          }
-        })
+        return FileUtil.writeFileContent(
+          this.filePath,
+          JSON.stringify(savedMemos)
+        )
       })
   }
 }
