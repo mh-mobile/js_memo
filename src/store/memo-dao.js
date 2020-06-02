@@ -7,8 +7,8 @@ class MemoDao {
     return this.memoStore.list()
   }
 
-  read () {
-    this.memoStore.read()
+  read (id) {
+    return this.memoStore.read(id)
   }
 
   edit () {

@@ -1,13 +1,8 @@
 const { MemoCommand, MemoModel, inquirer } = require('./memo-command.js')
 
 class MemoReadCommand extends MemoCommand {
-  execute () {
-    const memos = [
-      new MemoModel('memo1', '1', '', ''),
-      new MemoModel('memo2', '2', '', ''),
-      new MemoModel('memo3', '3', '', ''),
-      new MemoModel('memo4', '4', '', '')
-    ]
+  async execute () {
+    const memos = await this.dao.list()
 
     inquirer
       .prompt([
@@ -18,10 +13,10 @@ class MemoReadCommand extends MemoCommand {
           choices: memos
         }
       ])
-      .then((answers) => {
+      .then(async (answers) => {
         const selectedMemo = memos.find((memo) => memo.value === answers.memo)
-        console.info('memo:', selectedMemo.name)
-        this.dao.read()
+        const memo = await this.dao.read(selectedMemo.id)
+        console.log(memo.content)
       })
   }
 }

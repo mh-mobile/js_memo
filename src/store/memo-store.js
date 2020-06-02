@@ -3,7 +3,7 @@ class MemoStore {
     throw new Error('list method must be overridden')
   }
 
-  read () {
+  read (id) {
     throw new Error('read method must be overridden')
   }
 
