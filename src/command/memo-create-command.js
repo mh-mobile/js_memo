@@ -16,8 +16,10 @@ class MemoCreateCommand extends MemoCommand {
 
   async createMemos () {
     if (this.filePathExists()) {
+      // 引数のファイルからメモを追加
       return this.convertFilePathsToMemos()
     } else {
+      // 標準入力からメモを追加
       return this.convertStdinToMemos()
     }
   }
