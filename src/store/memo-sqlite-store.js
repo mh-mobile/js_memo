@@ -38,7 +38,7 @@ class MemoSqliteStore {
         this.getDatabase().all(`select * from ${this.getTableName()}`, (error, rows) => {
           if (error) throw error
           const memos = rows.map((row) => {
-            return new MemoModel(uuid.v4(), row.content)
+            return new MemoModel(row.id, row.content)
           })
           resolve(memos)
         })
@@ -47,6 +47,15 @@ class MemoSqliteStore {
   }
 
   read (id) {
+    return new Promise((resolve, reject) => {
+      this.getDatabase().serialize(() => {
+        this.getDatabase().get(`select id, content from ${this.getTableName()} where id = "${id}"`, (error, row) => {
+          if (error) return reject(error)
+          const memo = new MemoModel(uuid.v4(), row.content)
+          resolve(memo)
+        })
+      })
+    })
   }
 
   update (editedMemo) {
