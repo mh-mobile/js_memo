@@ -24,6 +24,7 @@
   "dependencies": {
     "commander": "^5.1.0",
     "inquirer": "^7.1.0",
-    "node-uuid": "^1.4.8"
+    "node-uuid": "^1.4.8",
+    "sqlite3": "^4.2.0"
   }
 }
