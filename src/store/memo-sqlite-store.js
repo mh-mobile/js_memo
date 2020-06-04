@@ -1,4 +1,6 @@
 const sqlite3 = require('sqlite3')
+const MemoModel = require('./memo-model.js')
+const uuid = require('node-uuid')
 
 class MemoSqliteStore {
   constructor (filePath) {
@@ -24,6 +26,32 @@ class MemoSqliteStore {
       })
       return resolve()
     })
+  }
+
+  list () {
+    return new Promise((resolve) => {
+      this.getDatabase().serialize(() => {
+        this.getDatabase().all('select * from memos', (error, rows) => {
+          if (error) throw error
+          const memos = rows.map((row) => {
+            return new MemoModel(uuid.v4(), row.content)
+          })
+          resolve(memos)
+        })
+      })
+    })
+  }
+
+  read (id) {
+  }
+
+  update (editedMemo) {
+  }
+
+  delete (id) {
+  }
+
+  create (newMemos) {
   }
 }
 

@@ -23,8 +23,7 @@ class MemoCLI {
 
   run (args, opts) {
     try {
-      // getExecCommand(args, opts)()
-      getExecCommand(args, opts)
+      getExecCommand(args, opts)()
     } catch (e) {
       console.log(`${e}`)
     }
