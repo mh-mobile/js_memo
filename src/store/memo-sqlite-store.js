@@ -75,6 +75,16 @@ class MemoSqliteStore {
   }
 
   delete (id) {
+    return new Promise((resolve, reject) => {
+      this.getDatabase().serialize(() => {
+        try {
+          this.getDatabase().run(`delete from ${this.getTableName()} where id = "${id}"`)
+          return resolve()
+        } catch (error) {
+          reject(error)
+        }
+      })
+    })
   }
 
   create (newMemos) {
