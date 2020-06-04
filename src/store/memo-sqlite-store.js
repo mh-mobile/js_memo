@@ -16,10 +16,14 @@ class MemoSqliteStore {
     return this.database
   }
 
+  getTableName () {
+    return 'memos'
+  }
+
   createTableIfNeeds () {
     return new Promise((resolve) => {
       this.getDatabase().serialize(() => {
-        this.getDatabase().run(`create table if not exists memos (
+        this.getDatabase().run(`create table if not exists ${this.getTableName()} (
           id text primary key,
           content text
         )`)
@@ -31,7 +35,7 @@ class MemoSqliteStore {
   list () {
     return new Promise((resolve) => {
       this.getDatabase().serialize(() => {
-        this.getDatabase().all('select * from memos', (error, rows) => {
+        this.getDatabase().all(`select * from ${this.getTableName()}`, (error, rows) => {
           if (error) throw error
           const memos = rows.map((row) => {
             return new MemoModel(uuid.v4(), row.content)
@@ -52,6 +56,21 @@ class MemoSqliteStore {
   }
 
   create (newMemos) {
+    return new Promise((resolve, reject) => {
+      this.getDatabase().serialize(() => {
+        this.getDatabase().run('begin transaction')
+        try {
+          newMemos.forEach((memo) => {
+            this.getDatabase().run(`insert into ${this.getTableName()} (id, content) values ($id, $content)`, [memo.id, memo.content])
+          })
+          this.getDatabase().run('commit')
+          return resolve()
+        } catch (error) {
+          this.getDatabase().run('rollback')
+          reject(error)
+        }
+      })
+    })
   }
 }
 
