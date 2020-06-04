@@ -59,6 +59,19 @@ class MemoSqliteStore {
   }
 
   update (editedMemo) {
+    return new Promise((resolve, reject) => {
+      this.getDatabase().serialize(() => {
+        this.getDatabase().run('begin transaction')
+        try {
+          this.getDatabase().run(`update ${this.getTableName()} set content = "${editedMemo.content}" where id = "${editedMemo.id}"`)
+          this.getDatabase().run('commit')
+          return resolve()
+        } catch (error) {
+          this.getDatabase().run('rollback')
+          reject(error)
+        }
+      })
+    })
   }
 
   delete (id) {
