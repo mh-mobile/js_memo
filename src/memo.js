@@ -6,6 +6,7 @@ const MemoReadCommand = require('./command/memo-read-command.js')
 const MemoEditCommand = require('./command/memo-edit-command.js')
 const MemoDeleteCommand = require('./command/memo-delete-command.js')
 const MemoFileStore = require('./store/memo-file-store.js')
+const MemoSqliteStore = require('./store/memo-sqlite-store.js')
 const MemoDao = require('./store/memo-dao.js')
 
 class MemoCLI {
@@ -22,13 +23,15 @@ class MemoCLI {
 
   run (args, opts) {
     try {
-      getExecCommand(args, opts)()
+      // getExecCommand(args, opts)()
+      getExecCommand(args, opts)
     } catch (e) {
       console.log(`${e}`)
     }
 
     function getExecCommand (args, opts) {
-      const memoDao = new MemoDao(new MemoFileStore('data/memo.json'))
+      //      const memoDao = new MemoDao(new MemoFileStore('data/memo.json'))
+      const memoDao = new MemoDao(new MemoSqliteStore('data/sqlite3.json'))
 
       // 有効なオプションのオブジェクトを生成
       const validOpts = OptionUtil.getValidOpts(opts)
