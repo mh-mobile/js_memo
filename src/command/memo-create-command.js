@@ -7,7 +7,7 @@ function MemoCreateCommand (dao, filePaths) {
 }
 
 MemoCreateCommand.prototype = Object.create(MemoCommand.prototype)
-
+MemoCreateCommand.prototype.constructor = MemoCreateCommand
 MemoCreateCommand.prototype.execute = async function () {
   const memos = await this.createMemos()
   if (memos.length === 0) return
@@ -23,7 +23,5 @@ MemoCreateCommand.prototype.createMemos = async function () {
     return FileUtil.convertStdinToMemos()
   }
 }
-
-MemoCreateCommand.prototype.constructor = MemoCreateCommand
 
 module.exports = MemoCreateCommand

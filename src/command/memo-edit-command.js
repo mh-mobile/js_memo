@@ -7,6 +7,7 @@ function MemoEditCommand (dao) {
 }
 
 MemoEditCommand.prototype = Object.create(MemoCommand.prototype)
+MemoEditCommand.prototype.constructor = MemoEditCommand
 MemoEditCommand.prototype.execute = async function () {
   const memos = await this.dao.list()
 
@@ -41,7 +42,5 @@ MemoEditCommand.prototype.execute = async function () {
       })
     })
 }
-
-MemoEditCommand.prototype.constructor = MemoEditCommand
 
 module.exports = MemoEditCommand

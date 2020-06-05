@@ -5,13 +5,12 @@ function MemoListCommand (dao) {
 }
 
 MemoListCommand.prototype = Object.create(MemoCommand.prototype)
+MemoListCommand.prototype.constructor = MemoListCommand
 MemoListCommand.prototype.execute = async function () {
   const memos = await this.dao.list()
   memos.forEach((memo) => {
     console.log(memo.name)
   })
 }
-
-MemoListCommand.prototype.constructor = MemoListCommand
 
 module.exports = MemoListCommand

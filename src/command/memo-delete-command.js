@@ -5,6 +5,7 @@ function MemoDeleteCommand (dao) {
 }
 
 MemoDeleteCommand.prototype = Object.create(MemoCommand.prototype)
+MemoDeleteCommand.prototype.constructor = MemoDeleteCommand
 MemoDeleteCommand.prototype.execute = async function () {
   const memos = await this.dao.list()
   if (memos.length === 0) return
@@ -23,7 +24,5 @@ MemoDeleteCommand.prototype.execute = async function () {
       await this.dao.delete(selectedMemo.id)
     })
 }
-
-MemoDeleteCommand.prototype.constructor = MemoDeleteCommand
 
 module.exports = MemoDeleteCommand

@@ -5,6 +5,7 @@ function MemoReadCommand (dao) {
 }
 
 MemoReadCommand.prototype = Object.create(MemoCommand.prototype)
+MemoReadCommand.prototype.constructor = MemoReadCommand
 MemoReadCommand.prototype.execute = async function () {
   const memos = await this.dao.list()
   if (memos.length === 0) return
@@ -24,6 +25,5 @@ MemoReadCommand.prototype.execute = async function () {
       console.log(memo.content)
     })
 }
-MemoReadCommand.prototype.constructor = MemoReadCommand
 
 module.exports = MemoReadCommand
