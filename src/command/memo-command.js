@@ -1,15 +1,15 @@
 const MemoModel = require('../store/memo-model.js')
 const inquirer = require('inquirer')
 
-class MemoCommand {
-  constructor (dao) {
-    this.dao = dao
-  }
-
-  execute () {
-    throw new Error('execute method must be overridden')
-  }
+function MemoCommand (dao) {
+  this.dao = dao
 }
+
+MemoCommand.prototype.execute = function () {
+  throw new Error('execute method must be overridden')
+}
+
+MemoCommand.prototype.constructor = MemoCommand
 
 module.exports = {
   MemoCommand,
