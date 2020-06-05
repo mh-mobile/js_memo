@@ -1,23 +1,24 @@
-class MemoStore {
-  list () {
-    throw new Error('list method must be overridden')
-  }
+function MemoStore () {}
+MemoStore.prototype.constructor = MemoStore
 
-  read (id) {
-    throw new Error('read method must be overridden')
-  }
+MemoStore.prototype.list = function () {
+  throw new Error('list method must be overridden')
+}
 
-  update (editedMemo) {
-    throw new Error('edit method must be overridden')
-  }
+MemoStore.prototype.read = function () {
+  throw new Error('read method must be overridden')
+}
 
-  delete (id) {
-    throw new Error('delete method must be overridden')
-  }
+MemoStore.prototype.delete = function () {
+  throw new Error('delete method must be overridden')
+}
 
-  create (newMemos) {
-    throw new Error('create method must be overridden')
-  }
+MemoStore.prototype.create = function () {
+  throw new Error('create method must be overridden')
+}
+
+MemoStore.prototype.update = function () {
+  throw new Error('update method must be overridden')
 }
 
 module.exports = MemoStore
