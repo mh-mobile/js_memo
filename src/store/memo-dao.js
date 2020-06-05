@@ -1,27 +1,25 @@
-class MemoDao {
-  constructor (memoStore) {
-    this.memoStore = memoStore
-  }
+function MemoDao (memoStore) {
+  this.memoStore = memoStore
+}
 
-  list () {
-    return this.memoStore.list()
-  }
+MemoDao.prototype.constructor = MemoDao
+MemoDao.prototype.list = function () {
+  return this.memoStore.list()
+}
+MemoDao.prototype.read = function (id) {
+  return this.memoStore.read(id)
+}
 
-  read (id) {
-    return this.memoStore.read(id)
-  }
+MemoDao.prototype.update = function (editedMemo) {
+  this.memoStore.update(editedMemo)
+}
 
-  update (editedMemo) {
-    this.memoStore.update(editedMemo)
-  }
+MemoDao.prototype.delete = function (id) {
+  return this.memoStore.delete(id)
+}
 
-  delete (id) {
-    return this.memoStore.delete(id)
-  }
-
-  create (newMemos) {
-    this.memoStore.create(newMemos)
-  }
+MemoDao.prototype.create = function (newMemos) {
+  this.memoStore.create(newMemos)
 }
 
 module.exports = MemoDao
